@@ -2,6 +2,7 @@ package faerun.unite;
 
 import faerun.Chateau;
 import faerun.utils.Couleur;
+import faerun.utils.CoupDivinException;
 import faerun.utils.PlateauUtils;
 
 public abstract class Guerrier {
@@ -43,8 +44,13 @@ public abstract class Guerrier {
 		return this.getPointDeVie() > 0;
 	}
 	
-	public void attaquer(Guerrier guerrier) {
+	public void attaquer(Guerrier guerrier) throws CoupDivinException {
+
 		int degatsInfliges = PlateauUtils.De3(this.getForce());
+
+		// Lance coup divin si les dégat infligé sont supérieurs a 80% des dégats maximums pouvant etre infligé
+		if (degatsInfliges > (this.getForce() * 3) * 0.8) throw new CoupDivinException("\u001B[41m" + "\u001B[30m" + "COUP DIVIN de la part de " + this + "\u001B[41m" + "\u001B[30m" +  " !!!" + Couleur.TERMINAL_RESET_COLOR_CODE);
+
 		int degatsSubits = guerrier.subirDegats(degatsInfliges);
 		
 		System.out.println(this + " à infligé " + degatsInfliges + " dégats à " + guerrier + " qui en a subit " + degatsSubits);

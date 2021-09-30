@@ -5,6 +5,7 @@ import faerun.unite.ChefNain;
 import faerun.unite.Elfe;
 import faerun.unite.Guerrier;
 import faerun.unite.Nain;
+import faerun.utils.CoupDivinException;
 
 public class TestEtape1 {
 
@@ -70,11 +71,15 @@ public class TestEtape1 {
 		
 		System.out.println("Combat !");
 		System.out.println("");
-		elfe.attaquer(nain);
-		nain.attaquer(elfe);
-		chefElfe.attaquer(chefNain);
-		chefNain.attaquer(chefElfe);
-		
+		try {
+			elfe.attaquer(nain);
+			nain.attaquer(elfe);
+			chefElfe.attaquer(chefNain);
+			chefNain.attaquer(chefElfe);
+		} catch (CoupDivinException e) {
+			e.printStackTrace();
+		}
+
 		
 	}
 

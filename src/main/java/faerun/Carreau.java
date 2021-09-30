@@ -5,6 +5,7 @@ import java.util.LinkedList;
 
 import faerun.unite.Guerrier;
 import faerun.utils.Couleur;
+import faerun.utils.CoupDivinException;
 
 public class Carreau {
 	
@@ -93,11 +94,18 @@ public class Carreau {
 		Couleur couleurAdverse = (couleur == Couleur.BLEU) ? Couleur.ROUGE : Couleur.BLEU;
 		
 		for(Guerrier g : this.getGerriersFromColor(couleur)) {
-			Guerrier guerrierAdverse = this.getGerriersFromColor(couleurAdverse).getFirst();
-			g.attaquer(guerrierAdverse);
-			
-			// On retire et supprime le guerrier si il est mort
-			if (!guerrierAdverse.estVivant()) this.suprimerGuerrier(couleurAdverse);
+			try {
+				Guerrier guerrierAdverse = this.getGerriersFromColor(couleurAdverse).getFirst();
+				g.attaquer(guerrierAdverse);
+
+				// On retire et supprime le guerrier si il est mort
+				if (!guerrierAdverse.estVivant()) this.suprimerGuerrier(couleurAdverse);
+			} catch (CoupDivinException e) {
+				System.out.println(e.getMessage());
+				this.getGerriersFromColor(couleurAdverse).clear();
+				return;
+			}
+
 		}
 		
 		// Appel récursif avec estDerniereManche = true
